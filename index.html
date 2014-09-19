@@ -1,0 +1,22 @@
+<html>
+    <head>
+        <title>Weather</title>
+            <link rel="stylesheet" type="text/css" href="style.css"/>
+            
+            <meta name="apple-mobile-web-app-capable" content="yes">
+            <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+            <meta name="viewport" content="minimal-ui">
+    </head>
+    <body>
+        <div class="debug"></div>
+        <div id="weather">Loading</div>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+            <script src="jquery.simpleWeather.js"></script>
+            <script src="jquery.fittext.js"></script>
+
+            <script src="script.js"></script>
+        <script>
+          $("#weather").fitText();
+        </script>
+    </body>
+</html>
