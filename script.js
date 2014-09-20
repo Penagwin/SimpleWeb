@@ -1,17 +1,33 @@
 // Docs at http://simpleweatherjs.com
 
 $(document).ready(function() {
-
     var place = "Jenison, Michigan";
-    function getWeather() {
+    jQuery.ajax( { 
+      url: '//freegeoip.net/json/', 
+      type: 'POST', 
+      dataType: 'jsonp',
+      success: function(location) {
+       setPlace(location.city+", " +location.region_name);
+       getWeather();
+       setWeather();
+    }
+      
+    });
+    console.log(place);
+    function setPlace(nplace){
+      place = nplace;
+    }
+    var weathercode, weathertemp, weatherunitstemp, weathercity, weatherregion;
+    function setWeather(){
+      if($(window).width() > $(window).height()){
+            html = '<h2 id="toppiece"><i id="weathericon" class="icon-'+weathercode+'"></i> '+ (weathertemp)+'&deg;'+weatherunitstemp+'</h2>';
+          
 
-      $.simpleWeather({
-        location: place,
-        woeid: '',
-        unit: 'f',
-        success: function(weather) {
-          html = '<h2 id="toppiece"><i class="icon-'+weather.code+'"></i> '+ (weather.temp)+'&deg;'+weather.units.temp+'</h2>';
-          html += '<div id="place">'+weather.city+', '+weather.region+'</div>';
+      }else{
+            html = '<h2 id="toppiece"><i class="icon-'+weathercode+'"></i> </h2><h2 id="tempnum">'+ (weathertemp)+'&deg;'+weatherunitstemp+'</h2>';
+                  
+          }
+          html += '<div id="place">'+weathercity+', '+weatherregion+'</div>';
           html += '    <input id="place_entry" style="display:none;"></input>';
 
       
@@ -31,6 +47,17 @@ $(document).ready(function() {
             $('#place').text($('#place_entry').val()).css('display', '');
           
           });
+    }
+    function getWeather() {
+
+      $.simpleWeather({
+        location: place,
+        woeid: '',
+        unit: 'f',
+        success: function(weather) {
+        weathercode = weather.code, weathertemp = weather.temp, weatherunitstemp = weather.units.temp;
+        weathercity =  weather.city, weatherregion = weather.region;
+        setWeather();
           $('#place_entry').change(function() {
             place = $('#place_entry').val();
             getWeather();
@@ -41,8 +68,11 @@ $(document).ready(function() {
         }
       });
     }
+    
     getWeather();
-
+    $(window).resize(function() {
+      setWeather();
+    });
     
     
 });
